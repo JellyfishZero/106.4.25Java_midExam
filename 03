@@ -1,3 +1,137 @@
-class StudentT implements Comparable <StudentT> {    static int col;    String sno, name;    int chinese, english;    double average;    public StudentT(String sno, String name, int chinese, int english) {        this.sno = sno;        this.name=name;        this.chinese=chinese;        this.english=english;        this.average=Double.valueOf(this.chinese+this.english)/2;    }    public static void setCol(int c) {        col = c;    }    @Override    public int compareTo(StudentT o) {        if (col==0)              return sno.compareTo(o.sno);        else if (col==1)             return name.compareTo(o.name);        else if (col==2) {            if (chinese < o.chinese) return -1;            if (chinese > o.chinese) return 1;            return 0;        }else if(col==3){            if (english < o.english) return -1;            if (english > o.english) return 1;            return 0;        }else{            if(average<o.average)return -1;            if(average>o.average)return 1;            return 0;        }    }        public String toString() {        return String.format("%s %s %d %d %.2f", sno, name, chinese, english, average);    }}public class SCBF1050013 {    public static void main(String[] args) {        try {//          以下程式碼請不用修改, 請從 ??? 開始修改            URL url = new URL("http://einstein.nptu.edu.tw:9212/sources/datastructure/StudentWebs/data/20160330students.txt");            URLConnection conn = url.openConnection();            conn.setConnectTimeout(3000);            Scanner scan = new Scanner(conn.getInputStream());                        System.out.print("檔案內容:\n");                        ArrayList<StudentT> al = new ArrayList<>();            String header = scan.nextLine();  // 檔案內容第一行為標題, 不做分解            System.out.println(header);            double chtotal=0, engtotal=0;            while (scan.hasNextLine())            {                String a = scan.nextLine();                System.out.println(a);                String split[] = a.split("\t");                al.add(new StudentT(split[0],split[1],Integer.valueOf(split[2]),Integer.valueOf(split[3])));            }            System.out.printf("共有%d位學生\n", al.size());            scan.close();                        System.out.println("依學號排列後:");            Collections.sort(al);                        print(al, 0, 0);            System.out.println("依平均分數降冪排列後:");            StudentT.col=4;            Collections.sort(al, Collections.reverseOrder());                        print(al, 0, 0);        } catch (IOException ex) {            System.out.print(ex.getMessage());        }     }   
-    private static void print(ArrayList<StudentT> al, double chavg, double engavg) {        int chCnt=0, engCnt=0;        for (StudentT e : al) {            System.out.println(e);            chavg += e.chinese;            engavg += e.english;        }        chavg/=al.size();        engavg/=al.size();        for (StudentT e : al) {            if(e.chinese<chavg)chCnt++;            if(e.english<engavg)engCnt++;        }        System.out.printf("國文平均為%.2f, 低於此分數的共有%d人, 英文平均為%.2f, 低於此分數的共有%d人\n", chavg, chCnt, engavg, engCnt);    }
-    }
+
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Scanner;
+
+/** 要完成此題需讀取以下的檔案(本次考試你不必做任何修改):　
+ *  http://einstein.nptu.edu.tw:9212/sources/datastructure/StudentWebs/data/20160330students.txt的內容，
+ * 請將各行內容印出, 並將其中的數值進行分解取出轉存入陣列(使用\\s+), 
+ * 針對學號, 及平均分數(取二位小數)進行排序.
+執行範例如下:
+
+檔案內容:
+sno	name	chinese	english
+CAF103003	黃聿○	65	49
+CAF103035	蔡佳○	90	89
+CAF103010	楊啟○	53	61
+...
+CAF103034	李侑○	77	73
+CAF103039	王人○	84	74
+共有68位學生
+依學號排列後:
+101406045 陳○ 86 52 69.00
+101406053 楊浩○ 93 79 86.00
+101706036 許宗○ 59 57 58.00
+...
+CAF103060 石○ 90 80 85.00
+ZM1042027 劉○ 55 73 64.00
+國文平均為73.25, 低於此分數的共有32人, 英文平均為73.68, 低於此分數的共有30人
+依平均分數降冪排列後:
+CAF103049 周昕○ 90 98 94.00
+CAF103025 徐靖○ 96 89 92.50
+102406050 吳信○ 84 98 91.00
+...
+CAF103010 楊啟○ 53 61 57.00
+102406054 林稚○ 51 60 55.50
+國文平均為73.25, 低於此分數的共有32人, 英文平均為73.68, 低於此分數的共有30人
+BUILD SUCCESSFUL (total time: 1 second)
+ * @author wfhsi_000
+ */
+class StudentT implements Comparable <StudentT> {
+    static int col;
+    String sno, name;
+    int chinese, english;
+    double average;
+    public StudentT(String sno, String name, int chinese, int english) {
+        this.sno = sno;
+        this.name=name;
+        this.chinese=chinese;
+        this.english=english;
+        this.average=Double.valueOf(this.chinese+this.english)/2;
+    }
+    public static void setCol(int c) {
+        col = c;
+    }
+    @Override
+    public int compareTo(StudentT o) {
+        if (col==0)  
+            return sno.compareTo(o.sno);
+        else if (col==1) 
+            return name.compareTo(o.name);
+        else if (col==2) {
+            if (chinese < o.chinese) return -1;
+            if (chinese > o.chinese) return 1;
+            return 0;
+        }else if(col==3){
+            if (english < o.english) return -1;
+            if (english > o.english) return 1;
+            return 0;
+        }else{
+            if(average<o.average)return -1;
+            if(average>o.average)return 1;
+            return 0;
+        }
+    }
+    
+    public String toString() {
+        return String.format("%s %s %d %d %.2f", sno, name, chinese, english, average);
+    }
+}
+public class SCBF1050013 {
+    public static void main(String[] args) {
+        try {
+//          以下程式碼請不用修改, 請從 ??? 開始修改
+            URL url = new URL("http://einstein.nptu.edu.tw:9212/sources/datastructure/StudentWebs/data/20160330students.txt");
+            URLConnection conn = url.openConnection();
+            conn.setConnectTimeout(3000);
+            Scanner scan = new Scanner(conn.getInputStream());            
+            System.out.print("檔案內容:\n");
+            
+            ArrayList<StudentT> al = new ArrayList<>();
+            String header = scan.nextLine();  // 檔案內容第一行為標題, 不做分解
+            System.out.println(header);
+            double chtotal=0, engtotal=0;
+            while (scan.hasNextLine())
+            {
+                String a = scan.nextLine();
+                System.out.println(a);
+                String split[] = a.split("\t");
+                al.add(new StudentT(split[0],split[1],Integer.valueOf(split[2]),Integer.valueOf(split[3])));
+            }
+            System.out.printf("共有%d位學生\n", al.size());
+            scan.close();
+            
+            System.out.println("依學號排列後:");
+            Collections.sort(al);            
+            print(al, 0, 0);
+            System.out.println("依平均分數降冪排列後:");
+            StudentT.col=4;
+            Collections.sort(al, Collections.reverseOrder());            
+            print(al, 0, 0);
+        } catch (IOException ex) {
+            System.out.print(ex.getMessage());
+        } 
+    }   
+
+    private static void print(ArrayList<StudentT> al, double chavg, double engavg) {
+        int chCnt=0, engCnt=0;
+        for (StudentT e : al) {
+            System.out.println(e);
+            chavg += e.chinese;
+            engavg += e.english;
+        }
+        chavg/=al.size();
+        engavg/=al.size();
+        for (StudentT e : al) {
+            if(e.chinese<chavg)chCnt++;
+            if(e.english<engavg)engCnt++;
+        }
+        System.out.printf("國文平均為%.2f, 低於此分數的共有%d人, 英文平均為%.2f, 低於此分數的共有%d人\n", chavg, chCnt, engavg, engCnt);
+    }
+
+    
+}
