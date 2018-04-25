@@ -1,6 +1,92 @@
+
+import java.util.Scanner;
+
+/**
+ * 請完成findMaxSubsequence(nums1, nums2) 找出兩個陣列中最大的共同子字串長度 例如,
+ * findMaxSubsequence({}, {}) -> 0 findMaxSubsequence({1}, {1}) -> 1
+ * findMaxSubsequence({3,1,1}, {1,1,3}) -> 2 findMaxSubsequence({1,3,2,1}, {1,
+ * 2, 3,11,13,15}) -> 1 執行結果： 請輸入第一組數值(輸入000結束): 請輸入第二組數值: 0 請輸入第一組數值(輸入000結束):
+ * 1 請輸入第二組數值: 1 1 請輸入第一組數值(輸入000結束): 1,1 請輸入第二組數值: 2,2 0 請輸入第一組數值(輸入000結束):
+ * 1,2,1 請輸入第二組數值: 3,3,1,2,1 3 請輸入第一組數值(輸入000結束): 1,2,1 請輸入第二組數值:
+ * 3,3,1,2,4,5,1,2,1 3 請輸入第一組數值(輸入000結束): 1,2,1 請輸入第二組數值: 3,3,1,2,4,5 2
+ * 請輸入第一組數值(輸入000結束): 25, 1, 2, 1, 2, 24, 23, 2, 1, 2, 1, 21, 20, 1, 2,
+ * 11,2,3,11 請輸入第二組數值: 1, 2, 1, 20, 21, 1, 2, 1, 2, 23, 24, 2, 1, 2, 1, 25 4
+ * 請輸入第一組數值(輸入000結束): 1, 2, 1, 20, 21, 1, 2, 1, 2, 23, 24, 2, 1, 2, 1, 25
+ * 請輸入第二組數值: 25, 1, 2, 1, 2, 24, 23, 2, 1, 2, 1, 21, 20, 1, 2, 11,2,3,11 4
+ * 請輸入第一組數值(輸入000結束): 000 BUILD SUCCESSFUL (total time: 2 minutes 42 seconds)
+ *
+ * @author wfhsi
+ */
 public class SCBF1050011 {
-    public static void main(String[] args) {        Scanner scan = new Scanner(System.in);        String line;        while (true) {            System.out.print("請輸入第一組數值(輸入000結束): ");            line = scan.nextLine();            if (line.equals("000")) {                break;            }            int[] nums1 = getNums(line);            System.out.print("請輸入第二組數值: ");            line = scan.nextLine();            int[] nums2 = getNums(line);
-            //        int[] nums1 = {1, 2, 1, 20, 21, 1, 2, 1, 2, 23, 24, 2, 1, 2, 1, 25};            //        int[] nums2 = {25, 1, 2, 1, 2, 24, 23, 2, 1, 2, 1, 21, 20, 1, 2, 11,2,3,11};            System.out.println(findMaxSubsequence(nums1, nums2));        }    }
-    public static int findMaxSubsequence(int[] nums, int[] revnums) {        int max = 0;        int comb = 0;        int count = 0;        for (int i = 0; i < nums.length; i++) {            for (int j = 0; j < revnums.length; j++) {                if (nums[i] == revnums[j]) {                    int l = j;                    for (int k = i; k < nums.length; k++) {                        if(nums[k]!=revnums[l]){                            if(count>max)max=count;                            count=0;                            break;                        }                        count++;                        l++;                        if(l>revnums.length-1){                            if(count>max)max=count;                            count=0;                            break;                        }                    }                }            }        }        return max;    }
-    private static int[] getNums(String line) {        String[] parts = line.split("\\s*,\\s*");        int[] res;        if (line.trim().isEmpty()) {            res = new int[]{};        } else {            res = new int[parts.length];            for (int i = 0; i < res.length; i++) {                res[i] = Integer.parseInt(parts[i]);            }        }        return res;    }
+
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        String line;
+        while (true) {
+            System.out.print("請輸入第一組數值(輸入000結束): ");
+            line = scan.nextLine();
+            if (line.equals("000")) {
+                break;
+            }
+            int[] nums1 = getNums(line);
+            System.out.print("請輸入第二組數值: ");
+            line = scan.nextLine();
+            int[] nums2 = getNums(line);
+
+            //        int[] nums1 = {1, 2, 1, 20, 21, 1, 2, 1, 2, 23, 24, 2, 1, 2, 1, 25};
+            //        int[] nums2 = {25, 1, 2, 1, 2, 24, 23, 2, 1, 2, 1, 21, 20, 1, 2, 11,2,3,11};
+            System.out.println(findMaxSubsequence(nums1, nums2));
+        }
+    }
+
+    public static int findMaxSubsequence(int[] nums, int[] revnums) {
+        int max = 0;
+        int comb = 0;
+        int count = 0;
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 0; j < revnums.length; j++) {
+                if (nums[i] == revnums[j]) {
+                    int l = j;
+                    for (int k = i; k < nums.length; k++) {
+                        if (nums[k] != revnums[l]) {
+                            if (count > max) {
+                                max = count;
+                            }
+                            count = 0;
+                            break;
+                        }
+                        count++;
+                        l++;
+                        if (l > revnums.length - 1) {
+                            if (count > max) {
+                                max = count;
+                            }
+                            count = 0;
+                            break;
+                        }
+                    }
+                    if (count > max) {
+                        max = count;
+                    }
+                    count=0;
+                }
+            }
+        }
+        return max;
+    }
+
+    private static int[] getNums(String line) {
+        String[] parts = line.split("\\s*,\\s*");
+        int[] res;
+        if (line.trim().isEmpty()) {
+            res = new int[]{};
+        } else {
+            res = new int[parts.length];
+            for (int i = 0; i < res.length; i++) {
+                res[i] = Integer.parseInt(parts[i]);
+            }
+        }
+        return res;
+    }
+
 }
