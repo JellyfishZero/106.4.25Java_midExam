@@ -1,5 +1,141 @@
-public class SCBF1050012 {        static HashMap<String, Integer> hm=null;    public static void main(String[] args) {        String names[] = {"劉素芬", "曾娟娟", "戴逸民", "劉育俊", "陳麗娟", "林士能", "吳貞和", "許瞻桂", "尤松文", "陳惠城", "郭冠樟", "李明錡", "劉子年", "李來錫", "王德鵬", "魏大雅", "朱素玥", "陳煜璋", "鄭博文", "蕭文峰", "洪明輝", "張月環", "劉毅馨", "林勤豐", "廖曜生", "張桂鳳", "顏楠源", "黃名義", "李伶珠", "江景泰", "施能輝", "陳宗輝", "陳素雯", "傅玉香", "謝春美", "顏信利", "康來詠", "林俊男", "李勇輝", "莊作彬", "潘怡靜", "李秀琴", "黃振藝", "洪振虔", "謝宏昇", "陳亮都", "廖淑芬", "邱素麗", "潘兆祥", "吳卓俊", "甘景裕", "歐家和", "謝中興", "林文鵬", "鄧鈺霖", "邱炳乾", "楊宗憲", "李明蕙"};        process(names);        System.out.println("原人員的統計值如下:");        show();        Scanner scan = new Scanner(System.in);        while (true) {            System.out.print("請輸入新進人員姓名(不輸入任何字元直接按Enter結束): ");            String name = scan.nextLine();            if (name.isEmpty()) break;            if(name.length()!=3){                System.out.println("抱歉, 此程式只能處理姓名字數為3的情形.");            } else {                process(name);                System.out.println("新人員的統計值如下:");                show();            }        }        //show2();    }    
-    private static void process(String[] names) {        hm =  new HashMap<>();        for (String name : names) {            process(name);        }    }
-    private static void show() {        int cnt = 0;//        String[] names = hm.keySet().toArray(new String[0]);//        Arrays.sort(names);        ArrayList <String>namesList = new ArrayList<>();        for (String e : hm.keySet()) {            namesList.add(e);        }        Collections.sort(namesList ,Collections.reverseOrder());        for (String e : namesList) {            System.out.printf("姓%s的有%d人\n",e,hm.get(e));            cnt+=hm.get(e);        }//        for (String e : hm.keySet()) {//            System.out.printf("姓%s的有%d人\n",e,hm.get(e));//            cnt+=hm.get(e);//        }        System.out.printf("共有%d人.\n", cnt);    }
-    private static void process(String name) {        String lastname = name.substring(0, 1);        if (hm.containsKey(lastname)) {            int cnt = hm.get(lastname);            hm.put(lastname, cnt+1);        } else {            hm.put(lastname, 1);        }    }
-    private static void show2() {        System.out.println("最後結果以數值降冪排序:");        // 使用 MapUtil ...                                                    }}
+
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+/** 請使用HashMap分析以下姓名之姓氏出現次數.
+ *  提示: 使用substring(a, b)可以取得位置介於a至b-1的子字串
+String names[] = {"劉素芬", "曾娟娟", "戴逸民", "劉育俊", "陳麗娟", "林士能", 
+* "吳貞和", "許瞻桂", "尤松文", "陳惠城", "郭冠樟", "李明錡", "劉子年", "李來錫", 
+* "王德鵬", "魏大雅", "朱素玥", "陳煜璋", "鄭博文", "蕭文峰", "洪明輝", "張月環", 
+* "劉毅馨", "林勤豐", "廖曜生", "張桂鳳", "顏楠源", "黃名義", "李伶珠", "江景泰", 
+* "施能輝", "陳宗輝", "陳素雯", "傅玉香", "謝春美", "顏信利", "康來詠", "林俊男", 
+* "李勇輝", "莊作彬", "潘怡靜", "李秀琴", "黃振藝", "洪振虔", "謝宏昇", "陳亮都", 
+* "廖淑芬", "邱素麗", "潘兆祥", "吳卓俊", "甘景裕", "歐家和", "謝中興", "林文鵬", 
+* "鄧鈺霖", "邱炳乾", "楊宗憲", "李明蕙"}; 
+此部份是在程式一開始執行時便進行分析.  接著程式會接收使用者的輸入來動態決定新加入
+的姓名的姓的個數及總共有人數.  顯示時請用<b>降冪</b>排序.  動態輸入的部份會判斷輸入的
+字元數是否為3. 直接按Enter鍵時程式會以數值的<b>降冪</b>排列顯示, 並結束.
+Note: 本題要使用課堂的MapUtil.java, 請下載jar檔使用:
+* http://einstein.nptu.edu.tw:9212/sources/datastructure/sourcecodes/java/MapUtilJarExample.zip
+
+執行結果如下
+原人員的統計值如下:
+姓黃的有2人
+姓魏的有1人
+姓顏的有2人
+...
+姓吳的有2人
+姓劉的有4人
+姓傅的有1人
+共有58人.
+請輸入新進人員姓名(不輸入任何字元直接按Enter結束): 傅大仁
+新人員的統計值如下:
+姓黃的有2人
+姓魏的有1人
+姓顏的有2人
+...
+姓吳的有2人
+姓劉的有4人
+姓傅的有2人
+共有59人.
+請輸入新進人員姓名(不輸入任何字元直接按Enter結束): 吳屏裕
+新人員的統計值如下:
+姓黃的有2人
+姓魏的有1人
+姓顏的有2人
+...
+姓吳的有3人
+姓劉的有4人
+姓傅的有2人
+共有60人.
+請輸入新進人員姓名(不輸入任何字元直接按Enter結束): 歐陽晶晶
+抱歉, 此程式只能處理姓名字數為3的情形.
+請輸入新進人員姓名(不輸入任何字元直接按Enter結束): 
+最後結果以數值降冪排序:
+李=>6
+陳=>6
+劉=>4
+...
+康=>1
+施=>1
+曾=>1
+BUILD SUCCESSFUL (total time: 1 minute 3 seconds)
+ *
+ * @author wfhsiao
+ */
+public class SCBF1050012 {    
+    static HashMap<String, Integer> hm=null;
+    public static void main(String[] args) {
+        String names[] = {"劉素芬", "曾娟娟", "戴逸民", "劉育俊", "陳麗娟", "林士能", "吳貞和", "許瞻桂", "尤松文", "陳惠城", "郭冠樟", "李明錡", "劉子年", "李來錫", "王德鵬", "魏大雅", "朱素玥", "陳煜璋", "鄭博文", "蕭文峰", "洪明輝", "張月環", "劉毅馨", "林勤豐", "廖曜生", "張桂鳳", "顏楠源", "黃名義", "李伶珠", "江景泰", "施能輝", "陳宗輝", "陳素雯", "傅玉香", "謝春美", "顏信利", "康來詠", "林俊男", "李勇輝", "莊作彬", "潘怡靜", "李秀琴", "黃振藝", "洪振虔", "謝宏昇", "陳亮都", "廖淑芬", "邱素麗", "潘兆祥", "吳卓俊", "甘景裕", "歐家和", "謝中興", "林文鵬", "鄧鈺霖", "邱炳乾", "楊宗憲", "李明蕙"};
+        process(names);
+        System.out.println("原人員的統計值如下:");
+        show();
+        Scanner scan = new Scanner(System.in);
+        while (true) {
+            System.out.print("請輸入新進人員姓名(不輸入任何字元直接按Enter結束): ");
+            String name = scan.nextLine();
+            if (name.isEmpty()) break;
+            if(name.length()!=3){
+                System.out.println("抱歉, 此程式只能處理姓名字數為3的情形.");
+            } else {
+                process(name);
+                System.out.println("新人員的統計值如下:");
+                show();
+            }
+        }
+        //show2();
+    }    
+
+    private static void process(String[] names) {
+        hm =  new HashMap<>();
+        for (String name : names) {
+            process(name);
+        }
+    }
+
+    private static void show() {
+        int cnt = 0;
+//        String[] names = hm.keySet().toArray(new String[0]);
+//        Arrays.sort(names);
+        ArrayList <String>namesList = new ArrayList<>();
+        for (String e : hm.keySet()) {
+            namesList.add(e);
+        }
+        Collections.sort(namesList ,Collections.reverseOrder());
+        for (String e : namesList) {
+            System.out.printf("姓%s的有%d人\n",e,hm.get(e));
+            cnt+=hm.get(e);
+        }
+//        for (String e : hm.keySet()) {
+//            System.out.printf("姓%s的有%d人\n",e,hm.get(e));
+//            cnt+=hm.get(e);
+//        }
+        System.out.printf("共有%d人.\n", cnt);
+    }
+
+    private static void process(String name) {
+        String lastname = name.substring(0, 1);
+        if (hm.containsKey(lastname)) {
+            int cnt = hm.get(lastname);
+            hm.put(lastname, cnt+1);
+        } else {
+            hm.put(lastname, 1);
+        }
+    }
+
+    private static void show2() {
+        System.out.println("最後結果以數值降冪排序:");
+        // 使用 MapUtil ...
+        
+        
+        
+        
+        
+        
+    }
+}
